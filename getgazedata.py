@@ -3,7 +3,7 @@ def execute(eyetracker):
 
 import time
 import tobii_research as tr
-global_gaze_data = None
+global_gaze_data = []
 found_eyetrackers = tr.find_all_eyetrackers()
 eyetracker = found_eyetrackers[0]
 
