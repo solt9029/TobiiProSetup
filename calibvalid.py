@@ -9,14 +9,8 @@ my_eyetracker = found_eyetrackers[0]
 
 eyetracker_address = my_eyetracker.address
 eyetracker = tr.EyeTracker(eyetracker_address)
-
 sample_count = 30
 timeout_ms = 1000
-
-calib = ScreenBasedCalibrationValidation(eyetracker, sample_count, timeout_ms)
-
-calib.enter_validation_mode()
-
 points_to_collect = [
     Point2(0.1, 0.1),
     Point2(0.1, 0.9),
@@ -24,12 +18,12 @@ points_to_collect = [
     Point2(0.9, 0.1),
     Point2(0.9, 0.9)]
 
-for point in points_to_collect:
-    # Visualize point on screen
-    # ...
-    calib.start_collecting_data(point)
-    while calib.is_collecting_data:
-        time.sleep(0.5)
+with ScreenBasedCalibrationValidation(eyetracker, sample_count, timeout_ms) as calib:
+    for point in points_to_collect:
+        # Visualize point on screen
+        # ...
+        calib.start_collecting_data(point)
+        while calib.is_collecting_data:
+            time.sleep(0.5)
+    calibration_result = calib.compute()
 
-calibration_result = calib.compute()
-calib.leave_validation_mode()
