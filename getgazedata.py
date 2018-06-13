@@ -10,7 +10,7 @@ eyetracker = found_eyetrackers[0]
 
 def gaze_data_callback(gaze_data):
     global global_gaze_data
-    global_gaze_data = gaze_data
+    global_gaze_data.append(gaze_data)
 
 def gaze_data(eyetracker):
     global global_gaze_data
@@ -24,6 +24,6 @@ time.sleep(2)
 eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
 print("Unsubscribed from gaze data.")
 
-print("Last received gaze package:")
+print("global_gaze_data:")
 print(global_gaze_data)
 # <EndExample>
