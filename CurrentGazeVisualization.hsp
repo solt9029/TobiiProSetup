@@ -1,0 +1,22 @@
+#include "hspext.as"
+
+bgscr 0, ginfo(20), ginfo(21), , 0, 0
+
+
+repeat 
+	aplsel "("
+	tobii_window_title = refstr
+	gaze_data_string = strmid(tobii_window_title, 1, strlen(tobii_window_title) - 2)
+	split gaze_data_string, ",", gaze_data_x_string, gaze_data_y_string
+	x = double(gaze_data_x_string) * ginfo(20)
+	y = double(gaze_data_y_string) * ginfo(21) 
+	
+	redraw 0
+	color 255, 255, 255
+	boxf
+	color 255, 0, 0
+	circle x - 10, y - 10, x + 10, y + 10 
+	redraw 1
+	
+	await 1
+loop
