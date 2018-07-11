@@ -39,7 +39,6 @@ class MyWindow(wx.Frame):
  
     def OnTimer(self, event):
         global gaze_data_string
-        print('OnTimer')
         self.SetTitle(gaze_data_string)
  
 if __name__ == '__main__':
