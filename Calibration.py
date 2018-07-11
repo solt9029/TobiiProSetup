@@ -1,17 +1,43 @@
 import time
 import tobii_research as tr
-from tobii_research_addons import ScreenBasedCalibrationValidation, Point2
+# from tobii_research_addons import ScreenBasedCalibrationValidation, Point2
+import wx
 
 found_eyetrackers = tr.find_all_eyetrackers()
 my_eyetracker = found_eyetrackers[0]
 
+class MyWindow(wx.Frame):
+    def __init__(self, parent=None, id=-1, title=None):
+        wx.Frame.__init__(self, parent, id, title)
+        self.panel = wx.Panel(self, size=(1000, 200))
+        self.panel.SetBackgroundColour('WHITE')
+        self.Fit()
+ 
+        self.Bind(wx.EVT_CLOSE, self.CloseWindow)
+ 
+        self.timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.OnTimer)
+        self.timer.Start(100)
+ 
+    def CloseWindow(self, event):
+        global eyetracker, tr
+        eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
+        self.timer.Stop()
+        wx.Exit()
+ 
+    def OnTimer(self, event):
+        global gaze_data_string
+        self.SetTitle(gaze_data_string)
+
 def execute(eyetracker):
+    global time, tr
+
     if eyetracker is None:
         return
 
     # <BeginExample>
-    import time
-    import tobii_research as tr
+    # import time
+    # import tobii_research as tr
 
     calibration = tr.ScreenBasedCalibration(eyetracker)
 

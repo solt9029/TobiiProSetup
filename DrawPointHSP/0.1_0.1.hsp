@@ -1,0 +1,3 @@
+bgscr 0, ginfo(20), ginfo(21), , 0, 0
+
+circle ginfo(20) / 10 - 10, ginfo(21) / 10 - 10, ginfo(20) / 10 + 10, ginfo(21) / 10 + 10
