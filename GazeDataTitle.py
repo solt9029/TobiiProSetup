@@ -13,8 +13,11 @@ eyetracker = found_eyetrackers[0]
 
 def gaze_data_callback(gaze_data):
     global gaze_data_string
-    print(str(gaze_data['left_gaze_point_on_display_area']))
-    gaze_data_string = str(gaze_data['left_gaze_point_on_display_area'])
+    right_gaze = gaze_data['right_gaze_point_on_display_area']
+    left_gaze = gaze_data['left_gaze_point_on_display_area']
+    x = (right_gaze[0] + left_gaze[0]) / 2.0
+    y = (right_gaze[1] + left_gaze[1]) / 2.0
+    gaze_data_string = '-(' + str(x) + ',' + str(y) + ')'
  
 eyetracker.subscribe_to(tr.EYETRACKER_GAZE_DATA, gaze_data_callback, as_dictionary=True)
 

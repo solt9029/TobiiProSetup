@@ -2,21 +2,49 @@
 
 bgscr 0, ginfo(20), ginfo(21), , 0, 0
 
+range = 19.88 * 2
+
 
 repeat 
-	aplsel "("
+	aplsel "-("
 	tobii_window_title = refstr
-	gaze_data_string = strmid(tobii_window_title, 1, strlen(tobii_window_title) - 2)
+	gaze_data_string = strmid(tobii_window_title, 2, strlen(tobii_window_title) - 2)
 	split gaze_data_string, ",", gaze_data_x_string, gaze_data_y_string
 	x = double(gaze_data_x_string) * ginfo(20)
 	y = double(gaze_data_y_string) * ginfo(21) 
 	
 	redraw 0
+
+	// ëSè¡ãé
 	color 255, 255, 255
 	boxf
+
+	drawCircle ginfo(20) / 10, ginfo(21) / 10, range
+	drawCircle ginfo(20) / 2, ginfo(21) / 10, range
+	drawCircle ginfo(20) * 9 / 10, ginfo(21) / 10, range
+	drawCircle ginfo(20) / 10, ginfo(21) / 2, range
+	drawCircle ginfo(20) / 2, ginfo(21) / 2, range
+	drawCircle ginfo(20) * 9 /10, ginfo(21) / 2, range
+	drawCircle ginfo(20) / 10, ginfo(21) * 9 / 10, range
+	drawCircle ginfo(20) / 2, ginfo(21) * 9 / 10, range
+	drawCircle ginfo(20) * 9 /10, ginfo(21) * 9 / 10, range
+
+	// ç°å©ÇƒÇ¢ÇÈèÍèä
 	color 255, 0, 0
 	circle x - 10, y - 10, x + 10, y + 10 
+	
 	redraw 1
 	
 	await 1
 loop
+
+#module
+	#deffunc drawCircle double x, double y, double range
+		color 0, 0, 0
+		circle x - range, y - range, x + range, y + range
+		color 255, 255, 255
+		circle x - range + 1, y - range + 1, x + range - 1, y + range - 1
+		color 0, 0, 0
+		circle x - 3, y - 3, x + 3, y + 3
+		return
+#global

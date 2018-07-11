@@ -2,32 +2,10 @@ import time
 import tobii_research as tr
 # from tobii_research_addons import ScreenBasedCalibrationValidation, Point2
 import wx
+import subprocess
 
 found_eyetrackers = tr.find_all_eyetrackers()
 my_eyetracker = found_eyetrackers[0]
-
-class MyWindow(wx.Frame):
-    def __init__(self, parent=None, id=-1, title=None):
-        wx.Frame.__init__(self, parent, id, title)
-        self.panel = wx.Panel(self, size=(1000, 200))
-        self.panel.SetBackgroundColour('WHITE')
-        self.Fit()
- 
-        self.Bind(wx.EVT_CLOSE, self.CloseWindow)
- 
-        self.timer = wx.Timer(self)
-        self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.timer.Start(100)
- 
-    def CloseWindow(self, event):
-        global eyetracker, tr
-        eyetracker.unsubscribe_from(tr.EYETRACKER_GAZE_DATA, gaze_data_callback)
-        self.timer.Stop()
-        wx.Exit()
- 
-    def OnTimer(self, event):
-        global gaze_data_string
-        self.SetTitle(gaze_data_string)
 
 def execute(eyetracker):
     global time, tr
@@ -53,7 +31,8 @@ def execute(eyetracker):
         print "Show a point on screen at {0}.".format(point)
 
         # Wait a little for user to focus.
-        time.sleep(0.7)
+        # time.sleep(3)
+        subprocess.call('./DrawPointHSP/' + str(point[0]) + '_' + str(point[1]) + '.exe')
 
         print "Collecting data at {0}.".format(point)
         if calibration.collect_data(point[0], point[1]) != tr.CALIBRATION_STATUS_SUCCESS:
@@ -66,14 +45,14 @@ def execute(eyetracker):
     print "Compute and apply returned {0} and collected at {1} points.".\
         format(calibration_result.status, len(calibration_result.calibration_points))
 
-    # Analyze the data and maybe remove points that weren't good.
-    recalibrate_point = (0.1, 0.1)
-    print "Removing calibration point at {0}.".format(recalibrate_point)
-    calibration.discard_data(recalibrate_point[0], recalibrate_point[1])
+    # # Analyze the data and maybe remove points that weren't good.
+    # recalibrate_point = (0.1, 0.1)
+    # print "Removing calibration point at {0}.".format(recalibrate_point)
+    # calibration.discard_data(recalibrate_point[0], recalibrate_point[1])
 
-    # Redo collection at the discarded point
-    print "Show a point on screen at {0}.".format(recalibrate_point)
-    calibration.collect_data(recalibrate_point[0], recalibrate_point[1])
+    # # Redo collection at the discarded point
+    # print "Show a point on screen at {0}.".format(recalibrate_point)
+    # calibration.collect_data(recalibrate_point[0], recalibrate_point[1])
 
     # Compute and apply again.
     print "Computing and applying calibration."
