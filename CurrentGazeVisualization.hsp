@@ -10,8 +10,8 @@ repeat
 	tobii_window_title = refstr
 	gaze_data_string = strmid(tobii_window_title, 2, strlen(tobii_window_title) - 2)
 	split gaze_data_string, ",", gaze_data_x_string, gaze_data_y_string
-	x = double(gaze_data_x_string) * ginfo(20)
-	y = double(gaze_data_y_string) * ginfo(21) 
+	x = double(gaze_data_x_string) // * ginfo(20)
+	y = double(gaze_data_y_string) // * ginfo(21) 
 	
 	redraw 0
 
