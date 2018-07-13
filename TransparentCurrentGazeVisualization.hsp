@@ -1,0 +1,41 @@
+
+#include "hspext.as"
+#uselib "user32.dll"
+
+#func SetWindowLongA "SetWindowLongA" int, int, int
+#func SetLayeredWindowAttributes "SetLayeredWindowAttributes" int, int, int, int
+
+#const WS_EX_LAYERED $00080000
+#const WS_EX_TRANSPARENT $00000020
+
+chgdisp 1, ginfo(20), ginfo(21)
+bgscr 0, ginfo(20), ginfo(21), , 0, 0
+
+SetWindowLongA hwnd, -20, WS_EX_LAYERED|WS_EX_TRANSPARENT
+SetLayeredWindowAttributes hwnd, 0, 1, 1
+color 0, 0, 0
+boxf 0, 0, ginfo(20), ginfo(21)
+
+repeat
+	redraw 0
+
+	// ëSè¡ãé
+	color 0, 0, 0
+	boxf 
+
+	// ç°å©ÇƒÇ¢ÇÈïîï™Çï`âÊÇ∑ÇÈ
+	aplsel "-("
+	tobii_window_title = refstr
+	gaze_data_string = strmid(tobii_window_title, 2, strlen(tobii_window_title) - 2)
+	split gaze_data_string, ",", gaze_data_x_string, gaze_data_y_string
+	x = double(gaze_data_x_string) // * ginfo(20)
+	y = double(gaze_data_y_string) // * ginfo(21) 
+	color 255, 0, 0
+	circle x - 10, y - 10, x + 10, y + 10 
+
+	
+	redraw 1
+	await 1
+loop
+
+stop
