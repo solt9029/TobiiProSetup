@@ -6,6 +6,7 @@
 import wx
 import tobii_research as tr
 import math
+import datetime
 
 gaze_data_string = 'gaze_data_string'
 
@@ -38,7 +39,7 @@ class MyWindow(wx.Frame):
  
         self.timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.OnTimer)
-        self.timer.Start(100)
+        self.timer.Start(1)
  
     def CloseWindow(self, event):
         global eyetracker, tr
